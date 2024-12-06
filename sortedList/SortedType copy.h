@@ -123,7 +123,7 @@ void SortedType::MakeEmpty()
 void SortedType::PutItem(ItemType item) //<- 변경필요
 // item is in the list; length has been incremented.
 {
-    NodeTyoe* newNode;
+    NodeType* newNode;
     NodeType* predLoc = nullptr;
     NodeType* location = listData;
     bool moreToSearch;
