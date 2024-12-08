@@ -72,23 +72,3 @@ void HeapSort(Country values[],int numValues){
 		ReheapDown(values,0,index-1);
 	}
 }
-
-
-using namespace std;
-int main() {
-
-	// Heap sort 객체 생성
-
-	while(1){
-		string target;
-		getline(cin, target);
-
-		if (target == "End")
-			break;
-
-		// 노드 국가명 기준으로 정렬 하면서 추가
-		
-	}
-
-	// 정렬된 내용 출력
-}

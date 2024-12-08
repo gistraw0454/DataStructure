@@ -24,13 +24,13 @@ private:
         int leftChild = root * 2 + 1;
         int rightChild = root * 2 + 2;
 
-        if (leftChild <= bottom) { // ÀÚ½Ä ³ëµå°¡ ÀÖÀ¸¸é
-            maxChild = leftChild; // ¿ŞÂÊ ÀÚ½ÄºÎÅÍ ½ÃÀÛ
+        if (leftChild <= bottom) { // ìì‹ ë…¸ë“œê°€ ìˆìœ¼ë©´
+            maxChild = leftChild; // ì™¼ìª½ ìì‹ë¶€í„° ì‹œì‘
             if (rightChild <= bottom && elements[leftChild].name < elements[rightChild].name) {
-                maxChild = rightChild; // ¿À¸¥ÂÊ ÀÚ½ÄÀÌ ´õ Å©¸é ¿À¸¥ÂÊ ¼±ÅÃ
+                maxChild = rightChild; // ì˜¤ë¥¸ìª½ ìì‹ì´ ë” í¬ë©´ ì˜¤ë¥¸ìª½ ì„ íƒ
             }
 
-            if (elements[root].name < elements[maxChild].name) { // ºÎ¸ğº¸´Ù ÀÚ½ÄÀÌ Å©¸é ½º¿Ò
+            if (elements[root].name < elements[maxChild].name) { // ë¶€ëª¨ë³´ë‹¤ ìì‹ì´ í¬ë©´ ìŠ¤ì™‘
                 Swap(elements[root], elements[maxChild]);
                 ReheapDown(maxChild, bottom);
             }
@@ -38,9 +38,9 @@ private:
     }
 
     void ReheapUp(int root, int bottom) {
-        if (bottom > root) { // Å½»öÇÒ °Ô ÀÖÀ¸¸é
+        if (bottom > root) { // íƒìƒ‰í•  ê²Œ ìˆìœ¼ë©´
             int parent = (bottom - 1) / 2;
-            if (elements[parent].name < elements[bottom].name) { // ºÎ¸ğº¸´Ù Å©¸é ½º¿Ò
+            if (elements[parent].name < elements[bottom].name) { // ë¶€ëª¨ë³´ë‹¤ í¬ë©´ ìŠ¤ì™‘
                 Swap(elements[parent], elements[bottom]);
                 ReheapUp(root, parent);
             }
@@ -54,7 +54,7 @@ public:
     }
 
     void Sort() {
-        for (int i = elements.size() / 2 - 1; i >= 0; --i) { // Èü building
+        for (int i = elements.size() / 2 - 1; i >= 0; --i) { // í™ building
             ReheapDown(i, elements.size() - 1);
         }
         for (int i = elements.size() - 1; i >= 1; --i) {
@@ -80,8 +80,8 @@ int main() {
 
 			size_t delimiter = input.find(" : ");
 
-			string name = input.substr(0, delimiter);	// delimiter ÀÎµ¦½º 01234 : 89 ÀÔ·ÂÇÏ¸é 5°¡ ³ª¿È. substr(ÀÎµ¦½º, ±æÀÌ)·Î strÀÚ¸£±â.
-			string capital = input.substr(delimiter + 3);	// 8 ~ ³¡±îÁö strÀÚ¸£±â
+			string name = input.substr(0, delimiter);	// delimiter ì¸ë±ìŠ¤ 01234 : 89 ì…ë ¥í•˜ë©´ 5ê°€ ë‚˜ì˜´. substr(ì¸ë±ìŠ¤, ê¸¸ì´)ë¡œ strìë¥´ê¸°.
+			string capital = input.substr(delimiter + 3);	// 8 ~ ëê¹Œì§€ strìë¥´ê¸°
 
 			Country inputCountry;
 			inputCountry.name = name;
