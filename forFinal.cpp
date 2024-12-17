@@ -367,3 +367,289 @@ void DeleteItem(NodeType<ItemType>*& listPtr, ItemType item){
         DeleteItem(listPtr->next, item);
     }
 }
+
+
+
+
+// bst
+typedef int ItemType;
+
+struct TreeNode{
+    ItemType info;
+    TreeNode* left;
+    TreeNode* right;
+};
+
+class TreeType{
+    public:
+    TreeType();
+    ~TreeType();
+    TreeType(const TreeType& originalTree);
+    void operator=(const TreeType& originalTree);
+    void MakeEmpty();
+    bool IsEmpty() const;
+    bool IsFull() const;
+    int GetLenght() const;
+    ItemType GetItem(ItemType item, bool& found);
+    void PutItem(ItemType item);
+    void DeleteItem(ItemType item);
+    void ResetTree(OrderType order);
+    ItemType GetNextItem(OrderType order, bool& finished);
+    void Print(std::ofstream& outFile) const;   
+    private:
+    TreeNode* root;
+};
+
+bool TreeType::IsFull() const{
+    TreeNode* location;
+    try{
+        location = new TreeNode;
+        delete location;
+        return false;
+    }
+    catch(std::bad_alloc exception){
+        return true;
+    }
+}
+
+bool TreeType::IsEmpty() const{
+    return root = nullptr;
+}
+
+int TreeType::GetLenght() const{
+    return CountNodes(root);
+}
+int CountNodes(TreeNode* tree){
+    if (tree == NULL){
+        return 0;
+    }
+    else return CountNodes(tree->left) + CountNodes(tree->right) +1;
+}
+
+void TreeType::GetItem(ItemType& item, bool& found){
+    Retrieve(root, item, found);
+}
+void Retrieve(TreeNode* tree, ItemType& item, bool& found){
+    if (tree == nullptr){
+        found = false;
+    }
+    else if ( item < tree->info ){
+        Retrieve(tree->left, item, found);
+    }
+    else if (item > tree->info){
+        Retrieve(tree->right, item, found);
+    }
+    else{
+        item = tree->info;
+        found = true;
+    }
+}
+
+void TreeType::PutItem(ItemType item){
+    Insert(root, item);
+}
+void Insert(TreeNode*& tree, ItemType item){
+    if (tree == nullptr){
+        tree = new TreeNode;
+        tree->info = item;
+        tree->left = nullptr;
+        tree->right = nullptr;
+    }
+    else if (item < tree->info){
+        Insert(tree->left, item);
+    }
+    else{
+        Insert(tree->right, item);
+    }
+}
+
+void TreeType::DeleteItem(ItemType item){
+    Delete(root, item);
+}
+void Delete(TreeNode*& tree, ItemType item){
+    if (item < tree->info){
+        Delete(tree->left,item);
+    }
+    else if ( item > tree->info){
+        Delete(tree->right,item);
+    }
+    else{
+        DeleteNode(tree);
+    }
+}
+void DeleteNode(TreeNode*& tree){
+    ItemType data;
+    TreeNode* tempPtr;
+    tempPtr = tree;
+
+    if (tree->left == nullptr && tree->right== nullptr){
+        delete tree;
+    }
+    else if (tree->left == nullptr){
+        tree = tree->right;
+        delete tree;
+    }
+    else if (tree->right == nullptr){
+        tree = tree->left;
+        delete tree;
+    }
+    else{
+        GetPredecessor(tree->left,data);
+        tree->info = data;
+        delete(tree->left, data);
+    }
+}
+void GetPredecessor(TreeNode* tree,ItemType& data){
+    while(tree->right != nullptr){
+        tree = tree->right;
+    }
+    data = tree->info;
+}
+
+void TreeType::Print(std::ofstream& outFile) const{
+    PrintTree(root, outFile);
+}
+void PrintTree(TreeNode* tree, std::ofstream& outFile){
+    if (tree!=nullptr){
+        PrintTree(tree->left,outFile);
+        outFile << tree->info;
+        PrintTree(tree->right,outFile);
+    }
+}
+
+TreeType::~TreeType(){
+    Destroy(root);
+}
+void Destory(TreeNode*& tree){
+    if (tree != nullptr){
+        Destory(tree->left);
+        Destory(tree->right);
+        delete tree;
+    }
+}
+
+TreeType::TreeType(const TreeType& originalTree){
+    CopyTree(root, originalTree);
+}
+void CopyTree(TreeNode*& copy, const TreeNode* originalTree){
+    if (originalTree == nullptr){
+        copy = nullptr;
+    }
+    else{
+        copy = new TreeNode;
+        copy->info = originalTree->info;
+        CopyTree(copy->left, originalTree->left);
+        CopyTree(copy->right, originalTree->right);
+    }
+}
+
+void TreeType::ResetTree(OrderType order){
+    switch(order){  
+        case PRE_ORDER : 
+            PreOrder(root, preQue);
+            break;
+        case IN_ORDER:
+            InOrder(root, inQue);
+            break;
+        case POST_ORDER;
+            PostOrder(root, postQue);
+            break;
+    }
+}
+void PreOrder(TreeNode* tree, QueType& preQue){
+    if (tree != nullptr){
+        preQue.Enqueue(tree->info);
+        PreOrder(tree->left, preQue);
+        PreOrder(tree->right, preQue);
+    }
+}
+void InOrder(TreeNode* tree, QueType& inQue){
+    if (tree != nullptr){
+        InOrder(tree->left, preQue);
+        inQue.Enqueue(tree->info);
+        InOrder(tree->right, preQue);
+    }
+}
+void PostOrder(TreeNode* tree, QueType& postQue){
+    if (tree != nullptr){
+        PostOrder(tree->left, preQue);
+        PostOrder(tree->right, preQue);
+        postQue.Enqueue(tree->info);
+    }
+}
+
+void TreeType::GetNextItem(OrderType order,bool& finished){
+    finished = false;
+    switch(order){  
+        case PRE_ORDER : 
+            preQue.Dequeue(item);
+            if(preQue.IsEmpty()) finished = true;
+            break;
+        case IN_ORDER:
+            inQue.Dequeue(item);
+            if(inQue.IsEmpty()) finished = true;
+            break;
+        case POST_ORDER;
+            postQue.Dequeue(item);
+            if(postQue.IsEmpty()) finished = true;
+            break;
+    }
+}
+
+void FindNode(TreeNode* tree, ItemType item, TreeNode*& nodePtr, TreeNode*& parentPtr){
+    nodePtr = tree;
+    parentPtr = nullptr;
+    bool found = false;
+    while(nodePtr != nullptr && !found){
+        if(item < nodePtr->info){
+            parentPtr = nodePtr;
+            nodePtr = nodePtr->left;
+        }
+        else if(item > nodePtr->info){
+            parentPtr = nodePtr;
+            nodePtr = nodePtr->right;
+        }
+        else{
+            found = true;
+        }
+    }
+}
+
+void TreeType::PutItem(ItemType item){
+    TreeNode* newNode;
+    TreeNode* nodePtr;
+    TreeNode* parentPtr;
+    newNode = new TreeNode;
+    newNode->info = item;
+    newNode->left = nullptr;
+    newNode->right = nullptr;
+
+    FindNode(root, item, nodePtr, parentPtr);
+
+    if (parentPtr == NULL){
+        root = newNode;
+    }
+    else if (item < parentPtr->info){
+        parentPtr->left = newNode;
+    }
+    else{
+        parentPtr->right = newNode;
+    }
+}
+
+void TreeType::DeleteItem(ItemType item){
+    TreeNode* nodePtr;
+    TreeNode* parentPtr;
+    FindNode(root, item, nodePtr, parentPtr);
+    if (nodePtr == root){
+        DeleteNode(root);
+    }
+    else{
+        if (parentPtr->left == nodePtr){
+            DeleteNode(parentPtr->left);
+        }
+        else{
+            DeleteNode(parentPtr->right);
+        }
+    }
+}
