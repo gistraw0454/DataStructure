@@ -15,7 +15,7 @@ class StackType{
     ItemType items[MAX_ITEMS];
 };
 
-template<class ItemType>    // classl외부에서 메서드나 생성자 등을 선언하는 경우, 각각 붙여주기
+template<class ItemType>    // class외부에서 메서드나 생성자 등을 선언하는 경우, 각각 붙여주기
 StackType<ItemType>::StackType(){
     top = -1;
 }

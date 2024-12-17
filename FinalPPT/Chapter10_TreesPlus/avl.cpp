@@ -126,6 +126,3 @@ int main() {
 
     return 0;
 }
-
-//Inorder traversal of the AVL tree:
-// 5 10 15 20 25 30

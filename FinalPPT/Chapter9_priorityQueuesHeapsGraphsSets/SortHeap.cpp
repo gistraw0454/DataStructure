@@ -1,5 +1,3 @@
-#include <iostream>
-#include <string>
 /* Heap sort를 구현하고, 주어진 문자열에서 데이터를 읽어 국가명을 기준으로 정렬 후 출력해라. */
 /* 국가명 : 수도명 으로 여러줄의 입력이 주어진다. 입력끝은 End로 표기*/
 struct Country {
